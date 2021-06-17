@@ -10,7 +10,18 @@ router.get('/', async (req, res) => {
         res.json(products);
     }
     catch(err) {
-        console.log(err.message);
+        res.json({message: err.message});
+    }
+});
+
+// GET SPECIFIC DATA BY ID
+router.get("/:id", async (req, res) => {
+    try {
+        const product = await Product.findById(req.params.id);
+        res.json(product);
+    }
+    catch(err) {
+        res.json({message: err.message});
     }
 });
 
@@ -27,7 +38,7 @@ router.post('/', async (req, res) => {
         res.status(201).json(product);
     }
     catch (err) {
-        console.log(err.message);
+        res.json({message: err.message});
     }
 });
 
@@ -36,22 +47,16 @@ router.patch('/:id', async (req, res) => {
     try {
         let product = await Product.findById(req.params.id);
         
-        if (req.body.name) {
-            product.name = req.body.name;
-        }
-        if (req.body.price) {
-            product.price = req.body.price;
-        }
-        if (req.body.description) {
-            product.description = req.body.description;
-        }
+        if (req.body.name) product.name = req.body.name;
+        if (req.body.price) product.price = req.body.price;
+        if (req.body.description) product.description = req.body.description;
 
         await product.save();
 
         res.json(product);
     }
     catch(err) {
-        console.log(err.message);
+        res.json({message: err.message});
     }
 });
 
@@ -63,7 +68,7 @@ router.delete('/:id', async (req, res) => {
         res.json({message: "Data has been deleted."});
     }
     catch(err) {
-        console.log(err.message);
+        res.json({message: err.message});
     }
 }); 
 
